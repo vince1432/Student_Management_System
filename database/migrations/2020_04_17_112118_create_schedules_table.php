@@ -19,7 +19,7 @@ class CreateSchedulesTable extends Migration
 			$table->integer('teacher_id');
             $table->string('day');
             $table->time('start_time');
-            $table->time('fisnish_time');
+            $table->time('finish_time');
 			$table->timestamps();
 
 			$table->index('room_id');

@@ -10,11 +10,11 @@ import Vue from 'vue'
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 import { routes } from './routes';
-import MainApp from './components/MainApp.vue';
-import NavBar from './components/Header.vue';
+import MainApp from './pages/MainApp.vue';
+import Notify from './components/alert.vue';
 import StoreData from './store';
 import { BootstrapVue } from 'bootstrap-vue'
-import vuetify from './plugins/vuetify'
+// import vuetify from './plugins/vuetify'
 // Install BootstrapVue
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -24,6 +24,8 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 Vue.use(BootstrapVue)
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
+Vue.component('notify', Notify)
 
 const router = new VueRouter({
     routes,
@@ -38,9 +40,8 @@ const app = new Vue({
     el: '#app',
 	router,
 	store,
-	vuetify,
+	// vuetify,
     components: {
-		MainApp,
-		NavBar
+		'main-app': MainApp
 }
 });

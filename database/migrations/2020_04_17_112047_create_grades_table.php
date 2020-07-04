@@ -15,7 +15,7 @@ class CreateGradesTable extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->decimal('prelim',3,2);
+            $table->decimal('prelim',3,2)->nullable();
             $table->decimal('midterm',3,2)->nullable();
             $table->decimal('prefinals',3,2)->nullable();
             $table->decimal('finals',3,2)->nullable();

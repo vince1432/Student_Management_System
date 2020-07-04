@@ -19,6 +19,7 @@ export default{
 			})
 		},
 		getStudent(context,payload) {
+			// console.log('res',response)
 			axios.get('http://127.0.0.1:8000/api/student/'+ payload)
 			.then((response) => {
 					context.commit('updateStudent', response.data);

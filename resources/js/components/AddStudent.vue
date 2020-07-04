@@ -7,9 +7,9 @@
 
 			<v-menu v-model="fromDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y  max-width="290px"  min-width="290px">
 				<template v-slot:activator="{ on }">
-					<v-text-field label="Birthdate" readonly :value="student.birthdate" v-on="on" ></v-text-field>
+					<v-text-field label="Birthdate" readonly :value="student.birthday" v-on="on" ></v-text-field>
 				</template>
-				<v-date-picker locale="en-in" v-model="student.birthdate" no-title @input="fromDateMenu = false" :min="minDate" ></v-date-picker>
+				<v-date-picker locale="en-in" v-model="student.birthday" no-title @input="fromDateMenu = false"  ></v-date-picker>
 			</v-menu>
 
 		</v-form>
@@ -26,14 +26,14 @@
 export default {
 	name: 'AddStudent',
 	props: {
-		id: Number,
+		student: Object,
 		actionType:String,
 		dialog : Boolean
 	},
 	data() {
 		return {
 			fromDateMenu: false,
-     	fromDateVal: null
+			fromDateVal: null,
 		}
 	},
 	methods: {
@@ -63,37 +63,21 @@ export default {
 			},
 			closeDialog(){
 				this.$emit('closeDialog', false)
-			}
+			},
 	},
 	computed:{
 		isAdd(){
 			if(this.actionType === 'Add')
 			{
-				return true
+				return true;
 			}
 			else if(this.actionType === 'Edit'){
-				return false
+				return false;
 			}
 			else{
-				return false
-			}
-		},
-		student(){
-			let student = {
-				first_name: '',
-				last_name: '',
-				birthdate: ''
-			}
-			if(this.actionType === 'Edit'){
-				if(this.id !== this.$store.getters.student.id){
-					this.$store.dispatch('getStudent',this.id)
-				}
-				return this.$store.getters.student
-			}
-			else if(this.actionType === 'Add'){
-				return student
+				return false;
 			}
 		}
-	}
+	},
 }
 </script>
