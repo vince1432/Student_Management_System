@@ -5,56 +5,94 @@ namespace App\Http\Controllers\Api;
 use App\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StudentResource;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
 	public function index()
 	{
-	 $students = Student::all();
+		$students =  Student::paginate(5);
 
-		return response()->json($students, 200);
+		return StudentResource::collection($students);
 	}
 
-	public function show(Student $student)
+	public function show($student_id)
 	{
-		return response()->json($student, 200);
+		$student = Student::where('student_id',$student_id)->first();
+
+		if(!is_object($student))
+			return response()->json('Student does not exist', 404);
+
+			return response()->json($student, 200);
 	}
 
-	public function store(Request $request)
+	public function store()
 	{
-	 $validatedData = $request->validate([
+		$validatedData = request()->validate([
+			'student_id' => 'required|unique:students',
 			'first_name' => 'required',
 			'last_name' => 'required',
-			'birthdate' => 'required'
+			'birthday' => 'required|date|date_format:Y-m-d',
+			'address' => 'required',
+			'contact_number' => 'required',
+			'course_id' => 'required',
+			'email' => 'required|unique:students',
 		]);
 
-		$student = new Student();
-		$student->first_name = $validatedData['first_name'];
-		$student->last_name = $validatedData['last_name'];
-		$student->birthdate = $validatedData['birthdate'];
-		$student->save();
-
-		return response()->json($student, 200);
-	}
-
-	public function update(Request $request,Student $student)
-	{
-	 $validatedData = $request->validate([
-		 'first_name' => 'required',
-		 'last_name' => 'required',
-		 'birthdate' => 'required'
+		$student = Student::create([
+			'student_id' => $validatedData['student_id'],
+			'first_name' => $validatedData['first_name'],
+			'last_name' => $validatedData['last_name'],
+			'birthday' => $validatedData['birthday'],
+			'address' => $validatedData['address'],
+			'contact_number' => $validatedData['contact_number'],
+			'course_id' => $validatedData['course_id'],
+			'email' => $validatedData['email']
 		]);
 
-		$student->first_name = $validatedData['first_name'];
-		$student->last_name = $validatedData['last_name'];
-		$student->birthdate = $validatedData['birthdate'];
-		$student->update();
-
-		return response()->json($student, 200);
+		return response()->json($student, 201);
 	}
 
-	public function destroy(Student $student)
+	public function update($student_id)
 	{
+		$student = Student::where('student_id',$student_id)->first();
+
+		if(!is_object($student))
+			return response()->json('Student does not exist', 404);
+
+		$validatedData = request()->validate([
+			'student_id' => 'required|unique:students,student_id,' .$student->id,
+			'first_name' => 'required',
+			'last_name' => 'required',
+			'birthday' => 'required|date|date_format:Y-m-d',
+			'address' => 'required',
+			'contact_number' => 'required',
+			'course_id' => 'required',
+			'email' => 'required|unique:students,email,' .$student->id,
+		]);
+
+		$student->update([
+			'student_id' => $validatedData['student_id'],
+			'first_name' => $validatedData['first_name'],
+			'last_name' => $validatedData['last_name'],
+			'birthday' => $validatedData['birthday'],
+			'address' => $validatedData['address'],
+			'contact_number' => $validatedData['contact_number'],
+			'course_id' => $validatedData['course_id'],
+			'email' => $validatedData['email']
+		]);
+
+		return response()->json($student, 201);
+	}
+
+	public function destroy($student_id)
+	{
+		$student = Student::where('student_id',$student_id)->first();
+
+		if(!is_object($student))
+			return response()->json('Student does not exist', 404);
+
 		$student->delete();
 		return response()->json('Succesfully deleted.', 200);
 	}

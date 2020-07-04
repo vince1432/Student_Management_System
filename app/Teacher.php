@@ -13,6 +13,11 @@ class Teacher extends Model
 
 	public function schedule()
     {
-        return $this->belongsTo('App\Schedule');
-    }
+        return $this->hasMany('App\Schedule');
+	}
+
+	public function account()
+	{
+		return $this->belongsTo('App\User', 'teacher_id', 'username');
+	}
 }

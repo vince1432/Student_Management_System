@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+	protected $fillable = ['name', 'unit'];
+
     public function grade()
     {
         return $this->hasOne('App\Grade');

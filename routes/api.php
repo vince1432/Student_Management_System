@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 
 /*
-|--------------------------------------------------------------------------
+|----------------\----------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
@@ -18,3 +18,13 @@ use Illuminate\Http\Request;
 // });
 
 Route::apiResource('/student', 'Api\StudentController');
+Route::apiResource('/teacher', 'Api\TeacherController');
+Route::apiResource('/course', 'Api\CourseController');
+Route::apiResource('/grade', 'Api\GradeController');
+Route::apiResource('/classroom', 'Api\RoomController');
+Route::apiResource('/schedule', 'Api\ScheduleController');
+Route::apiResource('/subject', 'Api\SubjectController');
+
+Route::prefix('/user')->group( function() {
+	Route::post('/login','Api\LoginController@login');
+});

@@ -16,12 +16,11 @@ class CreateSubjectsTable extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->decimal('unit',1,1);
-            $table->integer('grade_id');
+            $table->decimal('unit',2,1);
 			$table->timestamps();
 			$table->softDeletes();
 
-			$table->index('grade_id');
+			// $table->index('grade_id');
         });
     }
 
