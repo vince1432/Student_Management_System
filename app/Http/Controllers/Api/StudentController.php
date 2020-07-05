@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\StudentResource;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,25 +31,42 @@ class StudentController extends Controller
 	public function store()
 	{
 		$validatedData = request()->validate([
-			'student_id' => 'required|unique:students',
 			'first_name' => 'required',
 			'last_name' => 'required',
 			'birthday' => 'required|date|date_format:Y-m-d',
 			'address' => 'required',
 			'contact_number' => 'required',
 			'course_id' => 'required',
-			'email' => 'required|unique:students',
+			// 'email' => 'required|unique:students',
 		]);
 
+		$latestId = Student::select('student_id')->withTrashed()->latest()->first();
+		list($year, $month, $id) = explode('-',$latestId['student_id']);
+
+		$date_now = Carbon::now()->format('Y-m');
+		$date_id = Carbon::createFromFormat('Y-m', $year.'-'.$month)->format('Y-m');
+
+		if($date_now == $date_id)
+			$student_id = $date_id.'-'.substr('00000',0,-strlen(intval($id) + 1)).strval(intval($id) + 1);
+		else
+			$student_id = $date_now.'-00001';
+
 		$student = Student::create([
-			'student_id' => $validatedData['student_id'],
+			'student_id' => $student_id,
 			'first_name' => $validatedData['first_name'],
 			'last_name' => $validatedData['last_name'],
 			'birthday' => $validatedData['birthday'],
 			'address' => $validatedData['address'],
 			'contact_number' => $validatedData['contact_number'],
 			'course_id' => $validatedData['course_id'],
-			'email' => $validatedData['email']
+			// 'email' => $validatedData['email']
+		]);
+
+		$student->account()->create([
+			'username' => $student->student_id,
+			'role_id' => 1,
+			'email' => $validatedData['email'],
+			'password' => Hash::make($student_id)
 		]);
 
 		return response()->json($student, 201);
@@ -69,7 +87,7 @@ class StudentController extends Controller
 			'address' => 'required',
 			'contact_number' => 'required',
 			'course_id' => 'required',
-			'email' => 'required|unique:students,email,' .$student->id,
+			// 'email' => 'required|unique:students,email,' .$student->id,
 		]);
 
 		$student->update([
@@ -80,7 +98,7 @@ class StudentController extends Controller
 			'address' => $validatedData['address'],
 			'contact_number' => $validatedData['contact_number'],
 			'course_id' => $validatedData['course_id'],
-			'email' => $validatedData['email']
+			// 'email' => $validatedData['email']
 		]);
 
 		return response()->json($student, 201);

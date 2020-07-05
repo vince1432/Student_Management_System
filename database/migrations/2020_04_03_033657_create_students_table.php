@@ -22,8 +22,8 @@ class CreateStudentsTable extends Migration
             $table->string('address');
             $table->string('contact_number');
             $table->integer('course_id');
-			$table->string('email')->unique();
-			$table->timestamp('email_verified_at')->nullable();
+			// $table->string('email')->unique();
+			// $table->timestamp('email_verified_at')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 

@@ -21,8 +21,8 @@ class CreateTeachersTable extends Migration
             $table->date('birthday');
             $table->string('address');
             $table->string('contact_number');
-			$table->string('email')->unique();
-			$table->timestamp('email_verified_at')->nullable();
+			// $table->string('email')->unique();
+			// $table->timestamp('email_verified_at')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
         });

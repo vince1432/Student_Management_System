@@ -17,13 +17,20 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::apiResource('/student', 'Api\StudentController');
-Route::apiResource('/teacher', 'Api\TeacherController');
-Route::apiResource('/course', 'Api\CourseController');
-Route::apiResource('/grade', 'Api\GradeController');
-Route::apiResource('/classroom', 'Api\RoomController');
-Route::apiResource('/schedule', 'Api\ScheduleController');
-Route::apiResource('/subject', 'Api\SubjectController');
+Route::group(['middleware' => ['auth:api']], function () {
+	Route::apiResource('/student', 'Api\StudentController');
+	Route::apiResource('/teacher', 'Api\TeacherController');
+	Route::apiResource('/course', 'Api\CourseController');
+	Route::apiResource('/grade', 'Api\GradeController');
+	Route::apiResource('/classroom', 'Api\RoomController');
+	Route::apiResource('/schedule', 'Api\ScheduleController');
+	Route::apiResource('/subject', 'Api\SubjectController');
+
+Route::post('/logout','Api\LoginController@logout');
+
+});
+
+
 
 Route::prefix('/user')->group( function() {
 	Route::post('/login','Api\LoginController@login');
