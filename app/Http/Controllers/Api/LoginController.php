@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -14,19 +15,32 @@ class LoginController extends Controller
 	{
 		$login = $request->validate([
 			'username' => 'required|string',
-			'password' => 'required|string'
+			'password' => 'required|string',
 		]);
 
 		if(Auth::attempt($login, true))
 		{
-			$accessToken = Auth::user()->createToken('authToken')->accessToken;
+			$token = Auth::user()->createToken('authToken',['do_anything']);
 
-			return response()->json(['user' => Auth::user(),'access_token' => $accessToken]);
+			$token_data = [
+				'access_token' => $token->accessToken,
+				'scopes' => $token->token->scopes,
+			];
+
+			$token_data['expires_at'] = (isset($request->remember_me))
+										? Carbon::parse(Carbon::now()->addWeeks(1))->toDateTimeString()
+										: Carbon::now()->addDays(1)->toDateTimeString();
+
+			$response = [
+				'user' => Auth::user(),
+				'token_data' => $token_data,
+			];
+
+			return response()->json($response, 200);
 		}
-
 		else if(!Auth::attempt($login))
 		{
-			return response()->json('Invalid login credentials.');
+			return response()->json('Invalid login credentials.',500);
 		}
 	}
 

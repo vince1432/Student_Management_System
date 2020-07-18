@@ -10,10 +10,22 @@ class Teacher extends Model
 	use SoftDeletes;
 
 	protected $fillable = ['teacher_id','first_name','last_name','birthday','address','contact_number'];
-	// protected function boot()
-	// {
 
-	// }
+	// protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::created(function ($teacher){
+    //         $teacher->account()->create([
+    //             'username' => $teacher->teacher_id,
+    //             'email' => $teacher->email,
+    //             'password' => $teacher->username,
+    //             'role_id' => 2,
+    //         ]);
+
+    //         // Mail::to($user->email)->send(new NewUserWelcomeMail());
+    //     });
+    // }
 
     public function subjects()
     {

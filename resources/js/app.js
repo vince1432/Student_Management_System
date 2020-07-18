@@ -14,6 +14,8 @@ import MainApp from './pages/MainApp.vue';
 import Notify from './components/alert.vue';
 import StoreData from './store';
 import { BootstrapVue } from 'bootstrap-vue'
+import { isLoggedIn } from './auth.js';
+
 // import vuetify from './plugins/vuetify'
 // Install BootstrapVue
 
@@ -35,7 +37,7 @@ const router = new VueRouter({
 const store = new Vuex.Store(StoreData);
 
 window.Vue = require('vue');
-
+isLoggedIn(router,store)
 const app = new Vue({
     el: '#app',
 	router,
