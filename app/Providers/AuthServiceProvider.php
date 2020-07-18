@@ -28,6 +28,11 @@ class AuthServiceProvider extends ServiceProvider
 
 		Passport::routes();
 
+		Passport::tokensCan([
+			'do_anything' => 'Administrator',
+			'can_create' => 'Author'
+		]);
+
         //
     }
 }

@@ -1,9 +1,16 @@
 <template>
-	<div>
+	<div >
 		<!-- <v-app> -->
 			<!-- <Header></Header> -->
-			<b-container fluid class="w-100 ">
-				<router-view></router-view>
+			<b-container fluid >
+				<!-- <b-row class="body">
+					<b-col>
+						<SideBar></SideBar>
+					</b-col>
+					<b-col cols="9"> -->
+						<router-view></router-view>
+					<!-- </b-col> -->
+				<!-- </b-row> -->
 			</b-container>
 		<!-- </v-app> -->
 	</div>
@@ -11,7 +18,7 @@
 
 <script>
 import Header from '../components/Header.vue'
-
+import SideBar from '../components/SideBar.vue'
     export default {
 		data(){
 			return {
@@ -20,7 +27,15 @@ import Header from '../components/Header.vue'
 		},
 		name: 'main-app',
 		components: {
-			Header
-		},
+			Header,
+			SideBar
+		}
     }
 </script>
+
+<style scoped>
+::v-deep .body{
+	width: 100% !important;
+	height: 100% !important;
+}
+</style>

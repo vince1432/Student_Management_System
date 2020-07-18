@@ -10882,3 +10882,15 @@ a.text-dark:focus {
   }
 }
 
+.gray-background {
+  background-color: #57595d;
+}
+
+.pink-background {
+  background-color: #f66d9b;
+}
+
+.center-text {
+  text-align: center;
+}
+

@@ -36,7 +36,7 @@ class TeacherController extends Controller
 			'birthday' => 'required|date|date_format:Y-m-d',
 			'address' => 'required',
 			'contact_number' => 'required',
-			'email' => 'required|email',
+			'email' => 'required|email|unique:users',
 		]);
 
 		$latestId = Teacher::select('teacher_id')->withTrashed()->latest()->first();
