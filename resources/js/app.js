@@ -21,7 +21,7 @@ import { isLoggedIn } from './auth.js';
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(BootstrapVue)
 Vue.use(VueRouter);
