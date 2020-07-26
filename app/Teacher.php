@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -9,23 +10,24 @@ class Teacher extends Model
 {
 	use SoftDeletes;
 
-	protected $fillable = ['teacher_id','first_name','last_name','birthday','address','contact_number'];
+    protected $fillable = [
+        'teacher_id','first_name',
+        'last_name','birthday','address',
+        'contact_number', 'email'
+    ];
 
-	// protected static function boot()
-    // {
-    //     parent::boot();
+	protected static function boot()
+    {
+        parent::boot();
 
-    //     static::created(function ($teacher){
-    //         $teacher->account()->create([
-    //             'username' => $teacher->teacher_id,
-    //             'email' => $teacher->email,
-    //             'password' => $teacher->username,
-    //             'role_id' => 2,
-    //         ]);
-
-    //         // Mail::to($user->email)->send(new NewUserWelcomeMail());
-    //     });
-    // }
+        static::created(function ($teacher){
+            $teacher->account()->create([
+                'username' => $teacher->teacher_id,
+                'password' => Hash::make($teacher->teacher_id),
+                'role_id' => 2,
+            ]);
+        });
+    }
 
     public function subjects()
     {
