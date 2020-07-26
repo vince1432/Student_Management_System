@@ -17,16 +17,17 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => ['auth:api']], function () {
-	Route::apiResource('/student', 'Api\StudentController');
+
+Route::middleware('auth:api')->group(function () {
 	Route::apiResource('/teacher', 'Api\TeacherController');
+	Route::apiResource('/student', 'Api\StudentController');	
 	Route::apiResource('/course', 'Api\CourseController');
 	Route::apiResource('/grade', 'Api\GradeController');
 	Route::apiResource('/classroom', 'Api\RoomController');
 	Route::apiResource('/schedule', 'Api\ScheduleController');
 	Route::apiResource('/subject', 'Api\SubjectController');
 
-Route::post('/logout','Api\LoginController@logout');
+	Route::post('/logout','Api\LoginController@logout');
 
 });
 

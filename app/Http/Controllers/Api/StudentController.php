@@ -2,116 +2,52 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Resources\StudentResource;
-use Illuminate\Support\Facades\Validator;
+use App\Repositories\Contract\StudentRepositoryInterface;
 
 class StudentController extends Controller
 {
+	private $student_repository;
+	
+	public function __construct(StudentRepositoryInterface $student_repository)
+	{
+		$this->student_repository = $student_repository;
+	}
+
 	public function index()
 	{
-		$students =  Student::paginate(5);
+		$students =  $this->student_repository->students();
 
-		return StudentResource::collection($students);
+		return response()->json($students, 200);
 	}
 
 	public function show($student_id)
 	{
-		$student = Student::where('student_id',$student_id)->first();
+		$student =  $this->student_repository->student($student_id);
 
 		if(!is_object($student))
 			return response()->json('Student does not exist', 404);
 
-			return response()->json($student, 200);
+		return response()->json($student, 200);
 	}
 
-	public function store()
+	public function store(Request $request)
 	{
-		$validatedData = request()->validate([
-			'first_name' => 'required',
-			'last_name' => 'required',
-			'birthday' => 'required|date|date_format:Y-m-d',
-			'address' => 'required',
-			'contact_number' => 'required',
-			'course_id' => 'required',
-			// 'email' => 'required|unique:students',
-		]);
+		$student = $this->student_repository->insert($request);
 
-		$latestId = Student::select('student_id')->withTrashed()->latest()->first();
-		list($year, $month, $id) = explode('-',$latestId['student_id']);
-
-		$date_now = Carbon::now()->format('Y-m');
-		$date_id = Carbon::createFromFormat('Y-m', $year.'-'.$month)->format('Y-m');
-
-		if($date_now == $date_id)
-			$student_id = $date_id.'-'.substr('00000',0,-strlen(intval($id) + 1)).strval(intval($id) + 1);
-		else
-			$student_id = $date_now.'-00001';
-
-		$student = Student::create([
-			'student_id' => $student_id,
-			'first_name' => $validatedData['first_name'],
-			'last_name' => $validatedData['last_name'],
-			'birthday' => $validatedData['birthday'],
-			'address' => $validatedData['address'],
-			'contact_number' => $validatedData['contact_number'],
-			'course_id' => $validatedData['course_id'],
-			// 'email' => $validatedData['email']
-		]);
-
-		$student->account()->create([
-			'username' => $student->student_id,
-			'role_id' => 1,
-			'email' => $validatedData['email'],
-			'password' => Hash::make($student_id)
-		]);
-
-		return response()->json($student, 201);
+		return response()->json($student, 200);
 	}
 
-	public function update($student_id)
+	public function update(Request $request,  $student_id)
 	{
-		$student = Student::where('student_id',$student_id)->first();
+		$student = $this->student_repository->update($request, $student_id);
 
-		if(!is_object($student))
-			return response()->json('Student does not exist', 404);
-
-		$validatedData = request()->validate([
-			'student_id' => 'required|unique:students,student_id,' .$student->id,
-			'first_name' => 'required',
-			'last_name' => 'required',
-			'birthday' => 'required|date|date_format:Y-m-d',
-			'address' => 'required',
-			'contact_number' => 'required',
-			'course_id' => 'required',
-			// 'email' => 'required|unique:students,email,' .$student->id,
-		]);
-
-		$student->update([
-			'student_id' => $validatedData['student_id'],
-			'first_name' => $validatedData['first_name'],
-			'last_name' => $validatedData['last_name'],
-			'birthday' => $validatedData['birthday'],
-			'address' => $validatedData['address'],
-			'contact_number' => $validatedData['contact_number'],
-			'course_id' => $validatedData['course_id'],
-			// 'email' => $validatedData['email']
-		]);
-
-		return response()->json($student, 201);
+		return response()->json($student, 200);
 	}
 
 	public function destroy($student_id)
 	{
-		$student = Student::where('student_id',$student_id)->first();
-
-		if(!is_object($student))
-			return response()->json('Student does not exist', 404);
-
-		$student->delete();
-		return response()->json('Succesfully deleted.', 200);
+		return $this->student_repository->delete($student_id);
 	}
 }

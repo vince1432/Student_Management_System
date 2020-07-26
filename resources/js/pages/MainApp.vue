@@ -2,7 +2,7 @@
 	<div >
 		<!-- <v-app> -->
 			<!-- <Header></Header> -->
-			<b-container fluid >aaa
+			<b-container fluid >
 				<!-- <b-row class="body">
 					<b-col>
 						<SideBar></SideBar>
@@ -11,7 +11,7 @@
 						<router-view></router-view>
 					<!-- </b-col> -->
 				<!-- </b-row> -->
-			</b-container>aaa
+			</b-container>
 		<!-- </v-app> -->
 	</div>
 </template>

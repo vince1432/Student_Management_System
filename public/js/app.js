@@ -67156,15 +67156,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [
-      _c(
-        "b-container",
-        { attrs: { fluid: "" } },
-        [_vm._v("aaa\n\t\t\t"), _vm._v(" "), _c("router-view")],
-        1
-      ),
-      _vm._v("aaa\n\t")
-    ],
+    [_c("b-container", { attrs: { fluid: "" } }, [_c("router-view")], 1)],
     1
   )
 }
@@ -84901,8 +84893,8 @@ var currUser = Object(_auth_js__WEBPACK_IMPORTED_MODULE_0__["getCurrentUser"])()
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\V\laragon\www\school\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\V\laragon\www\school\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\school\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\school\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
