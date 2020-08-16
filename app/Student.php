@@ -12,8 +12,9 @@ class Student extends Model
 
 	protected $fillable = [
         'student_id','first_name','last_name',
-        'birthday','address','contact_number',
-        'course_id','email'
+        'birthday','gender','contact_number',
+        'course_id','email',
+		'building','barangay','city','province','other'
     ];
 
 	protected static function boot()
@@ -30,7 +31,7 @@ class Student extends Model
             // Mail::to($user->email)->send(new NewUserWelcomeMail());
         });
 	}
-	
+
     public function course()
     {
         return $this->belongsTo('App\Course');

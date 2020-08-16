@@ -19,7 +19,11 @@ class CreateTeachersTable extends Migration
 			$table->string('first_name');
             $table->string('last_name');
             $table->date('birthday');
-            $table->string('address');
+            $table->string('gender');
+            $table->string('building');
+            $table->string('barangay');
+            $table->string('city');
+            $table->string('province');
             $table->string('contact_number');
 			$table->string('email')->unique();
 			$table->timestamp('email_verified_at')->nullable();

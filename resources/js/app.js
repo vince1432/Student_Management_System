@@ -6,28 +6,28 @@
 
 require('./bootstrap');
 
-import Vue from 'vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import Vue from 'vue';
 import VueRouter from "vue-router";
 import Vuex from "vuex";
-import { routes } from './routes';
-import MainApp from './pages/MainApp.vue';
-import Notify from './components/alert.vue';
-import StoreData from './store';
-import { BootstrapVue } from 'bootstrap-vue'
 import { isLoggedIn } from './auth.js';
+import Notify from './components/alert.vue';
+import MainApp from './pages/MainApp.vue';
+import { routes } from './routes';
+import StoreData from './store';
 
-// import vuetify from './plugins/vuetify'
-// Install BootstrapVue
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-Vue.component('notify', Notify)
+Vue.component('notify', Notify);
+
 
 const router = new VueRouter({
     routes,
@@ -35,15 +35,14 @@ const router = new VueRouter({
 });
 
 const store = new Vuex.Store(StoreData);
+isLoggedIn(router,store)
 
 window.Vue = require('vue');
-isLoggedIn(router,store)
 const app = new Vue({
-    el: '#app',
+	el: '#app',
 	router,
 	store,
-	// vuetify,
-    components: {
-		'main-app': MainApp
-}
+	components: {
+			'main-app': MainApp,
+	},
 });

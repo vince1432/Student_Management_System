@@ -1,147 +1,47 @@
 <template>
-	 <div>
-		 <v-navigation-drawer
-			v-model="drawer"
-			:mini-variant.sync="mini"
-			disable-route-watcher
-			enable-resize-watcher
-			app
-			permanent
-      >
-        <v-list-item class="px-2">
-          <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
-          </v-list-item-avatar>
+	<div class="d-inline">
+		<b-navbar toggleable="lg" type="dark" variant="info" :sticky="true">
+		<b-navbar-toggle @click="sidebar=!sidebar" target="" />
 
-          <v-list-item-title>John Leider</v-list-item-title>
+    <b-navbar-toggle target="nav_collapse" />
 
-          <v-btn
-            icon
-            @click.stop="mini = !mini"
-          >
-            <v-icon>edit</v-icon>
-          </v-btn>
-        </v-list-item>
+    <b-collapse is-nav id="nav_collapse">
+      <b-navbar-nav>
+        <b-nav-item href="#">Link</b-nav-item>
+        <b-nav-item href="#" disabled>Disabled</b-nav-item>
+      </b-navbar-nav>
 
-        <v-divider></v-divider>
-		<v-list dense>
-		<!-- Students -->
-			<v-list-item link :class="mini ? '' :'p-0'">
-				<!-- Icon -->
-				<v-list-item-icon v-if="mini">
-					<v-icon >edit</v-icon>
-				</v-list-item-icon>
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" />
+          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+        </b-nav-form>
 
- 				<v-list-item-content :class="mini ? '' :'p-0'">
-					 <!-- Expansion -->
-					 <v-expansion-panels >
-						<v-expansion-panel d>
-							<!-- Header -->
-							<v-expansion-panel-header><p><v-icon class="pr-5">edit</v-icon>Students</p></v-expansion-panel-header>
-							<!-- Content -->
-							<v-expansion-panel-content>
-								<v-list dense>
-									<v-list-item-group color="primary">
-										<!-- Items -->
-										<v-list-item>
-											<v-list-item-content>
-												<v-list-item-title >Student List</v-list-item-title>
-											</v-list-item-content>
-										</v-list-item>
-										<v-list-item>
-											<v-list-item-content>
-												<v-list-item-title >Registration</v-list-item-title>
-											</v-list-item-content>
-										</v-list-item>
-									</v-list-item-group>
-								</v-list>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-					</v-expansion-panels>
-				</v-list-item-content>
-			</v-list-item>
+        <b-nav-item-dropdown text="Lang" right>
+          <b-dropdown-item href="#">EN</b-dropdown-item>
+          <b-dropdown-item href="#">ES</b-dropdown-item>
+          <b-dropdown-item href="#">RU</b-dropdown-item>
+          <b-dropdown-item href="#">FA</b-dropdown-item>
+        </b-nav-item-dropdown>
 
-			<!-- Teachers -->
-			<v-list-item link :class="mini ? '' :'p-0'">
-				<!-- Icon -->
-				<v-list-item-icon v-if="mini">
-					<v-icon >edit</v-icon>
-				</v-list-item-icon>
-
- 				<v-list-item-content :class="mini ? '' :'p-0'">
-					 <!-- Expansion -->
-					 <v-expansion-panels>
-						<v-expansion-panel>
-							<!-- Header -->
-							<v-expansion-panel-header><p><v-icon class="pr-5">edit</v-icon>Teachers</p></v-expansion-panel-header>
-							<!-- Content -->
-							<v-expansion-panel-content >
-								<v-list dense>
-									<v-list-item-group color="primary">
-										<!-- Items -->
-										<v-list-item class="m-1">
-											<v-list-item-content>
-												<v-list-item-title >Teacher List</v-list-item-title>
-											</v-list-item-content>
-										</v-list-item>
-										<v-list-item>
-											<v-list-item-content>
-												<v-list-item-title >Registration</v-list-item-title>
-											</v-list-item-content>
-										</v-list-item>
-									</v-list-item-group>
-								</v-list>
-							</v-expansion-panel-content>
-						</v-expansion-panel>
-					</v-expansion-panels>
-				</v-list-item-content>
-			</v-list-item>
-		</v-list>
-      </v-navigation-drawer>
-      <!-- <v-app-bar
-        color="deep-purple accent-4"
-        dense
-        dark
-      >
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-        <v-toolbar-title>Page title</v-toolbar-title>
-
-        <v-spacer></v-spacer>
-
-        <v-btn icon>
-          <v-icon>Students</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>Teacher</v-icon>
-        </v-btn>
-
-        <v-menu
-          left
-          bottom
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item
-              v-for="n in 5"
-              :key="n"
-              @click="() => {}"
-            >
-              <v-list-item-title>Option {{ n }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-app-bar> -->
-    </div>
+        <b-nav-item-dropdown right>
+          <!-- Using button-content slot -->
+          <template slot="button-content"><em>User</em></template>
+          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#">Signout</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+		<SideBar :show="sidebar" id="sidebar" class="sidebar h-100 s-show "></SideBar>
+		<SideBar :show="true" id="sidebar" class="sidebar h-100 l-show"></SideBar>
+		</div>
 </template>
 
 <script>
+import SideBar from './SideBar.vue'
+
 export default {
 	name: 'navbar',
 	data(){
@@ -150,22 +50,52 @@ export default {
 			mini: true,
 			item: 1,
 			panel: false,
-    items: [
-      { text: 'Real-Time', icon: 'mdi-clock' },
-      { text: 'Audience', icon: 'mdi-account' },
-      { text: 'Conversions', icon: 'mdi-flag' },
-    ],
+			items: [
+				{ text: 'Real-Time', icon: 'mdi-clock' },
+				{ text: 'Audience', icon: 'mdi-account' },
+				{ text: 'Conversions', icon: 'mdi-flag' },
+			],
+			sidebar: false,
 		}
 	},
 	methods: {
 		go() {
 			this.$router.push('aa');
-		}
-	}
+		},
+	},
+	components: {
+			SideBar
+		},
 }
 </script>
 <style scoped>
  .v-expansion-panels{
 	color: red !important;
  }
+ .navbar{
+	 background-color: #333940 !important;
+ }
+
+
+  @media only screen and (min-width: 992px) {
+	.l-show{
+		display: block !important;
+		width: 250px;
+	}
+	.s-show{
+		display: none !important;
+	}
+}
+@media only screen and (max-width: 991px) {
+	.l-show{
+		display: none !important;
+		width: 0px;
+	}
+	.s-show{
+		display:block !important;
+	}
+}
+
+
+
 </style>
