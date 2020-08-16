@@ -1,4 +1,4 @@
-import {getCurrentUser} from './auth.js'
+import { getCurrentUser } from './auth.js';
 
 const currUser = getCurrentUser()
 
@@ -24,7 +24,10 @@ export default{
 			return state.isLoggedIn;
 		},
 		getToken : (state) => {
-			return state.tokenData;
+			if(state.user)
+				return state.user.token_data.access_token;
+			else
+				return null;
 		}
 	},
 	actions:{
@@ -54,8 +57,8 @@ export default{
 		// 	state.student = payload;
 		// },
 		updateUser : (state, payload) =>{
-			state.user = payload.user;
-			state.tokenData = payload.token_data;
+			state.user = payload;
+			state.isLoggedIn = !!payload;
 		},
 		checkUser : (state) => {
 			return (Object.keys.length > 0 ) ? true : false

@@ -7,15 +7,73 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-
-.gray-background{
-	background-color: $grey;
+.bg-default{
+	background-color: $default !important;
 }
 
-.pink-background{
-	background-color: $pink;
+.bg-gray{
+	background-color: $grey !important;
+}
+
+.bg-pink{
+	background-color: $pink !important;
 }
 
 .center-text{
-	text-align: center;
+	text-align: center !important;
 }
+
+.invalid{
+	border-color: $red !important;
+}
+
+.hide{
+	display: none !important;
+}
+
+.btn-rounded{
+	width: 100px !important;
+	border-radius: 100px !important;
+	background-color: $green !important;
+}
+
+.btn-icon{
+	cursor: pointer;
+}
+// .menu-item:hover{
+// 	background-color: #EEEEEE !important;
+//   	cursor: pointer;
+// }
+
+////animation
+
+@-webkit-keyframes slideIn {
+	from {left: -300px; opacity: 0}
+	to {left: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+	from {left: -300px; opacity: 0}
+	to {left: 0; opacity: 1}
+}
+
+@-webkit-keyframes slideOut {
+	from {left: 0; opacity: 1}
+	to {left: -300px; opacity: 0}
+}
+
+@keyframes slideOut {
+	from {left: 0; opacity: 1}
+	to {left: -300px; opacity: 0}
+}
+
+@-webkit-keyframes fadeIn {
+	from {opacity: 0}
+	to {opacity: 1}
+}
+
+@keyframes fadeIn {
+	from {opacity: 0}
+	to {opacity: 1}
+}
+

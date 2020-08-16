@@ -9,7 +9,7 @@ use App\Repositories\Contract\TeacherRepositoryInterface;
 class TeacherController extends Controller
 {
 	private $teacher_repository;
-	
+
 	public function __construct(TeacherRepositoryInterface $teacher_repository)
 	{
 		$this->teacher_repository = $teacher_repository;
