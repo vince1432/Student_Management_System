@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Student::class, function (Faker $faker) {
     return [
-		'student_id' => $faker->year . '-' . $faker->month . '-' . $faker->numberBetween($min = 999, $max = 10000),
+		'user_id' => $faker->year . '-' . $faker->month . '-' . $faker->numberBetween($min = 999, $max = 10000),
 		'first_name' => $faker->firstName,
 		'last_name' => $faker->lastName,
 		'birthday' => $faker->date($format = 'Y-m-d', $max = 'now'),

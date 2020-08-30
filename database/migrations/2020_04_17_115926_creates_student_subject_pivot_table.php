@@ -15,7 +15,7 @@ class CreatesStudentSubjectPivotTable extends Migration
     {
         Schema::create('student_subject', function (Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('student_id');
+			$table->integer('user_id');
 			$table->integer('subject_id');
             $table->timestamps();
         });

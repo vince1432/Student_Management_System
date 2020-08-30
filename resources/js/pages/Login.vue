@@ -12,7 +12,7 @@
 					<!-- username -->
 					<b-form-input
 						id="input-1"
-						v-model="user.username"
+						v-model="user.userable_id"
 						type="text"
 						required
 						placeholder="Enter username"
@@ -53,7 +53,7 @@ import {login,storeUser} from '../auth.js'
     data :() => {
       return {
         user: {
-          username: '2019-12-9548',
+          userable_id: '2019-12-9548',
           password: '2019-12-9548',
           remember_me: false,
 				},

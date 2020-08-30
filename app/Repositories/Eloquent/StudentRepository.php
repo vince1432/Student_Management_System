@@ -15,50 +15,50 @@ class StudentRepository implements StudentRepositoryInterface
         return Student::select($this->Format())->paginate(5);
     }
 
-    public Function student($student_id)
+    public Function student($user_id)
     {
         return Student::select($this->Format())
-                ->where('student_id',$student_id)
-                ->first();
+			->where('user_id',$user_id)
+			->first();
     }
 
     public function insert($request)
     {
-        $validatedData = $this->validate($request);
+        $validatedData = $this->validate($request,-1);
 
-		$student_id = $this->GenerateId();
+		$user_id = $this->GenerateId();
         $student = Student::create(
 			array_merge(
 				$this->ValidatedFormat($validatedData),
-				['student_id' => $student_id]
+				['user_id' => $user_id]
 			));
 
-		$student->account()->create([
-			'username' => $student->student_id,
-			'role_id' => 1,
-			'password' => Hash::make($student_id)
-        ]);
+		// $student->account()->create([
+		// 	'userable_id' => $student->user_id,
+		// 	'role_id' => 1,
+		// 	'password' => Hash::make($user_id)
+        // ]);
 
         return $student;
     }
 
-    public function update($request, $student_id)
+    public function update($request, $user_id)
     {
-        $student = Student::where('student_id',$student_id)->first();
+        $student = Student::where('user_id',$user_id)->first();
 
 		if(!is_object($student))
 			return response()->json('Student does not exist', 404);
 
-		$validatedData = $this->validate($request);
+		$validatedData = $this->validate($request,$student->id);
 
 		$student->update($this->ValidatedFormat($validatedData));
 
         return $student;
     }
 
-    public function delete($student_id)
+    public function delete($user_id)
     {
-        $student = Student::where('student_id',$student_id)->first();
+        $student = Student::where('user_id',$user_id)->first();
 
 		if(!is_object($student))
             return response()->json('Student does not exist', 404);
@@ -72,7 +72,7 @@ class StudentRepository implements StudentRepositoryInterface
     private function Format()
 	{
         return [
-            'student_id', 'first_name', 'last_name',
+            'user_id', 'first_name', 'last_name',
             'birthday', 'gender', 'contact_number',
 			'course_id', 'email',
 			'building','barangay','city','province', 'other'
@@ -99,26 +99,25 @@ class StudentRepository implements StudentRepositoryInterface
 
     private function GenerateId()
     {
-        $latestId = Student::select('student_id')->withTrashed()->latest()->first();
-		list($year, $month, $id) = explode('-',$latestId['student_id']);
+        $latestId = Student::select('user_id')->withTrashed()->latest()->first();
+		list($year, $month, $id) = explode('-',$latestId['user_id']);
 
 		$date_now = Carbon::now()->format('Y-m');
 		$date_id = Carbon::createFromFormat('Y-m', $year.'-'.$month)->format('Y-m');
 
 		if($date_now == $date_id)
-			$student_id = $date_id.'-'.substr('00000',0,-strlen(intval($id) + 1)).strval(intval($id) + 1);
+			$user_id = $date_id.'-'.substr('00000',0,-strlen(intval($id) + 1)).strval(intval($id) + 1);
 		else
-            $student_id = $date_now.'-00001';
+            $user_id = $date_now.'-00001';
 
-        return $student_id;
+        return $user_id;
 	}
 
-	private function validate($request)
+	private function validate($request,$id)
 	{
-		return $request->validate([
+		$rule = [
 			'first_name' => 'required',
 			'last_name' => 'required',
-			'birthday' => 'required|date|date_format:Y-m-d',
 			'birthday' => 'required|date|date_format:Y-m-d',
 			'gender' => 'required',
 			'building' => 'required',
@@ -129,6 +128,11 @@ class StudentRepository implements StudentRepositoryInterface
 			'contact_number' => 'required',
 			'course_id' => 'required',
 			'email' => 'required|unique:students',
-		]);
+		];
+		$email = ($id >= 0)
+			? ['email' => 'required|email|unique:students,email,'.$id]
+			: ['email' => 'required|email|unique:students,email'];
+
+		return $request->validate(array_merge($rule,$email));
 	}
 }

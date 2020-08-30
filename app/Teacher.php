@@ -11,7 +11,7 @@ class Teacher extends Model
 	use SoftDeletes;
 
     protected $fillable = [
-        'teacher_id','first_name',
+        'user_id','first_name',
         'last_name','birthday','gender',
 		'contact_number', 'email',
 		'building','barangay','city','province','other'
@@ -23,8 +23,8 @@ class Teacher extends Model
 
         static::created(function ($teacher){
             $teacher->account()->create([
-                'username' => $teacher->teacher_id,
-                'password' => Hash::make($teacher->teacher_id),
+                'userable_id' => $teacher->user_id,
+                'password' => Hash::make($teacher->user_id),
                 'role_id' => 2,
             ]);
         });
@@ -42,6 +42,7 @@ class Teacher extends Model
 
 	public function account()
 	{
-		return $this->hasOne('App\User', 'username', 'teacher_id');
+		// return $this->hasOne('App\User', 'userable_id', 'user_id');
+		return $this->morphOne('App\User','userable', null, null, 'user_id');
 	}
 }

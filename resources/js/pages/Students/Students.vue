@@ -25,8 +25,8 @@
 			<template v-slot:item.actions = {item}>
 				<!-- <v-btn small class="mr-2 success"  @click="getStudent(item.id),dialog = true" ><v-icon>mdiPencil</v-icon> </v-btn>
 				<v-btn small class="error" @click="deleteStudent(item.id)" ><v-icon>delete</v-icon></v-btn> -->
-				<b-icon @click="getStudent(item.student_id),dialog = true">edit</b-icon>
-				<b-icon @click="deleteStudent(item.student_id)">delete</b-icon>
+				<b-icon @click="getStudent(item.user_id),dialog = true">edit</b-icon>
+				<b-icon @click="deleteStudent(item.user_id)">delete</b-icon>
 				<!-- {{item.index}} -->
 			</template>
 			<template v-slot:no-data>
@@ -47,7 +47,7 @@ import AddStudent from '../../components/AddStudent.vue'
 					{
 					text: 'ID',
 					align: 'start',
-					value: 'student_id',
+					value: 'user_id',
 					class: "center"
 					},
 					{ text: 'First Name', value: 'first_name' },

@@ -12,13 +12,19 @@
 				:items="teachers"
 				:fields="fields"
 				sort-by="id"
+				:busy="loading"
 			>
 				<template v-slot:cell(actions)="{ item }">
 					<div class="text-center">
-						<b-icon-pencil-square class="btn-icon" ></b-icon-pencil-square>
+						<b-icon-pencil-square class="btn-icon" @click="$router.push(`/teacher/update/${item.user_id}`)"></b-icon-pencil-square>
 						<b-icon-trash-fill class="btn-icon"></b-icon-trash-fill>
 					</div>
 				</template>
+				<template v-slot:table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
 			</b-table>
 		</b-container>
 	</div>
@@ -28,8 +34,9 @@
   export default {
     data: () => {
       return {
-				fields: ['teacher_id','first_name', 'last_name', 'email', 'actions'],
-				teachers : [],
+				fields: ['user_id','first_name', 'last_name', 'email', 'actions'],
+				teachers: [],
+				loading: true,
 			}
 		},
 		mounted()  {
@@ -41,6 +48,7 @@
 				.then((res) => {
 					console.log(res);
 					this.teachers = res.data.data;
+					this.loading = false;
 				})
 				.catch((err) => {
 					console.log(err);

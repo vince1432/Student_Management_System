@@ -30,13 +30,16 @@ Vue.component('notify', Notify);
 
 
 const router = new VueRouter({
-    routes,
-    mode: "history"
+	routes,
+	mode: "history"
 });
 
 const store = new Vuex.Store(StoreData);
 isLoggedIn(router,store)
-
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+}
 window.Vue = require('vue');
 const app = new Vue({
 	el: '#app',

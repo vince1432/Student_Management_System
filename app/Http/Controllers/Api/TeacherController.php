@@ -22,9 +22,9 @@ class TeacherController extends Controller
 		return response()->json($teachers, 200);
 	}
 
-	public function show($teacher_id)
+	public function show($user_id)
 	{
-		$teacher =  $this->teacher_repository->teacher($teacher_id);
+		$teacher =  $this->teacher_repository->teacher($user_id);
 
 		if(!is_object($teacher))
 			return response()->json('Teacher does not exist', 404);
@@ -39,15 +39,15 @@ class TeacherController extends Controller
 		return response()->json($teacher, 200);
 	}
 
-	public function update(Request $request, $teacher_id)
+	public function update(Request $request, $user_id)
 	{
-		$teacher = $this->teacher_repository->update($request, $teacher_id);
+		$teacher = $this->teacher_repository->update($request, $user_id);
 
 		return response()->json($teacher, 200);
 	}
 
-	public function destroy($teacher_id)
+	public function destroy($user_id)
 	{
-		return $this->teacher_repository->delete($teacher_id);
+		return $this->teacher_repository->delete($user_id);
 	}
 }

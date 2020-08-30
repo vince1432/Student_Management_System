@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->group(function () {
 	Route::apiResource('/teacher', 'Api\TeacherController');
-	Route::apiResource('/student', 'Api\StudentController');	
+	Route::apiResource('/student', 'Api\StudentController');
 	Route::apiResource('/course', 'Api\CourseController');
 	Route::apiResource('/grade', 'Api\GradeController');
 	Route::apiResource('/classroom', 'Api\RoomController');

@@ -2,7 +2,7 @@
 	<div id="app">
 		<b-container fluid class="p-0 position-relative">
 			<div v-if="!isLogin" class="d-inline">
-				<Header></Header>
+				<Header :name="userName"></Header>
 			</div>
 			<div class="main-app">
 				<router-view></router-view>
@@ -17,6 +17,7 @@ import Header from '../components/Header.vue'
 		data(){
 			return {
 				isLogged : this.$store.getters.isLoggedIn,
+				userName: 'User',
 			}
 		},
 		name: 'main-app',

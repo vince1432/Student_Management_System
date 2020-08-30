@@ -2,7 +2,7 @@
 	<div class="bg-default">
 		<b-container class="w-100 p-4 ">
 			<b-card>
-				<b-card-title>Teacher Registration</b-card-title>
+				<b-card-title v-text="isUpdate?'Teacher Update':'Teacher Registration'"></b-card-title>
 				<b-card-body>
 					<hr>
 					<!-- form -->
@@ -67,6 +67,7 @@
 										type="email"
 										required
 										placeholder="Email"
+										:aria-invalid="!!errors"
 									></b-form-input>
 								</b-form-group>
 							</b-col>
@@ -143,7 +144,7 @@
 								</b-form-group>
 							</b-col>
 						</b-row>
-						<b-button type="submit" class="btn-rounded float-right" variant="success">Register</b-button>
+						<b-button type="submit" class="btn-rounded float-right" v-text="isUpdate?'Update':'Register'" variant="success"></b-button>
 					</b-form>
 				</b-card-body>
 			</b-card>
@@ -168,33 +169,74 @@
           province: '',
           other: '',
         },
-        show1: true
+				show1: true,
+				isUpdate: false,
+				errors:{},
 			}
 		},
-		// mounted()  {
-		// 	this.getTeachers();
-		// },
+		mounted()  {
+			if(this.$route.name == 'TeacherUpdate'){
+				this.isUpdate = true
+				this.getTeacher(this.$route.params.id);
+			}
+		},
     methods: {
+			// submit form
 			onSubmit(evt) {
 				evt.preventDefault()
+				if(this.isUpdate)
+					this.update();
+				else
+					this.add();
+			},
+			getTeacher(id){
+				axios.get(`/api/teacher/${id}`)
+				.then((res) => {
+					this.teacher = res.data;
+				})
+				.catch((err) => {
+					this.$router.push('/teachers');
+					this.errors = err.errors;
+				});
+			},
+			add(){
 				let msg,variant,title;
 				axios.post('/api/teacher',this.teacher)
 				.then(res => {
 					variant = 'success';
 					msg = 'Teacher successfully created.';
 					title = 'Success!';
+					this.$router.push('/teachers');
+					this.teacher = {};
 				})
 				.catch(err => {
 					variant = 'danger';
 					msg = 'Please check the fields.';
 					title = 'Unsuccessful!';
+					this.errors = err.errors;
 				})
 				.finally(()=> {
 					this.makeToast(msg,variant,title);
-					this.teacher = {};
-					this.$router.push('/teachers');
 				});
-      },
+			},
+			update(){
+				let msg,variant,title;
+				axios.patch(`/api/teacher/${this.$route.params.id}`,this.teacher)
+				.then(res => {
+					variant = 'success';
+					msg = 'Teacher successfully updated.';
+					title = 'Success!';
+				})
+				.catch(err => {
+					variant = 'danger';
+					msg = 'Please check the fields.';
+					title = 'Unsuccessful!';
+					this.errors = err.errors;
+				})
+				.finally(()=> {
+					this.makeToast(msg,variant,title);
+				});
+			},
 			makeToast(msg,variant,title) {
 				setTimeout(() => {
 					this.$bvToast.toast(msg, {
@@ -203,8 +245,13 @@
 					solid: true
 					})
 				},500);
-	  	},
-    }
+			},
+		},
+		watch: {
+			teacher: () => {
+				console.log('teacher')
+			}
+		}
   }
 </script>
 <style>

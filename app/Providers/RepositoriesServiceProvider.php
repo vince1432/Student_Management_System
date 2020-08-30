@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Eloquent\LoginRepository;
+use App\Repositories\Contract\LoginRepositoryInterface;
 use App\Repositories\Eloquent\StudentRepository;
 use App\Repositories\Contract\StudentRepositoryInterface;
 use App\Repositories\Eloquent\TeacherRepository;
@@ -28,6 +30,7 @@ class RepositoriesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(LoginRepositoryInterface::class,LoginRepository::class);
         $this->app->bind(StudentRepositoryInterface::class,StudentRepository::class);
         $this->app->bind(TeacherRepositoryInterface::class,TeacherRepository::class);
     }

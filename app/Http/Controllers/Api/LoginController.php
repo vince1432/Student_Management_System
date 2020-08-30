@@ -2,43 +2,31 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Repositories\Contract\LoginRepositoryInterface;
 
 class LoginController extends Controller
 {
+	private $login_repository;
+
+	public function __construct(LoginRepositoryInterface $login_repository)
+	{
+		$this->login_repository = $login_repository;
+	}
+
     public function login(Request $request)
 	{
-		$login = $request->validate([
-			'username' => 'required|string',
-			'password' => 'required|string',
-		]);
+		$credentials = $this->login_repository->validateCredential($request);
 
-		if(Auth::attempt($login, true))
+		if(Auth::attempt($credentials, true))
 		{
-			$token = Auth::user()->createToken('authToken',['do_anything']);
-
-			$token_data = [
-				'access_token' => $token->accessToken,
-				'scopes' => $token->token->scopes,
-			];
-
-			$token_data['expires_at'] = (isset($request->remember_me))
-										? Carbon::parse(Carbon::now()->addWeeks(1))->toDateTimeString()
-										: Carbon::now()->addDays(1)->toDateTimeString();
-
-			$response = [
-				'user' => Auth::user(),
-				'token_data' => $token_data,
-			];
+			$response = $this->login_repository->tokenCreate($request);
 
 			return response()->json($response, 200);
 		}
-		else if(!Auth::attempt($login))
+		else if(!Auth::attempt($credentials))
 		{
 			return response()->json('Invalid login credentials.',500);
 		}
